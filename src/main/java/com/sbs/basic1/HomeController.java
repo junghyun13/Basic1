@@ -3,6 +3,7 @@ package com.sbs.basic1;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,9 +17,10 @@ import java.util.Map;
 @Controller
 public class HomeController {
     private int cnt;
-
+    private List<Person> people; //전역변수로 끄집어내야함
     public HomeController() {
         cnt = -1;
+        people = new ArrayList<>();
     }
 
     @GetMapping("/home/main")
@@ -158,4 +160,34 @@ public class HomeController {
         list.add(car2);
         return list;
     }
+    @GetMapping("/home/addPerson")
+    @ResponseBody
+    public String addPerson(String name,int age){
+        Person p = new Person(name,age);
+        System.out.println(p);
+        people.add(p); //리스트의 데이터를 보존하기 위해서
+        return "%d번 사람추가되었습니다.".formatted(p.getId());
+    }
+    @GetMapping("/home/people")
+    @ResponseBody
+    public List<Person> showPeople(){
+        return people;
+    }
+    @AllArgsConstructor
+    @Getter //getId받기 위해서
+    @ToString //결과 출력한거 보여줌 ex) HomeController.Person(id=1, name=dru, age=87)
+    class Person {
+        private static int lastId=0;
+        private int id;
+        private final String name;
+        private final int age;
+
+
+        public Person(String name, int age) {
+            this.id = ++lastId; //사람추가될때마다 증가
+            this.name=name;
+            this.age=age;
+        }
+    }
+
 }
