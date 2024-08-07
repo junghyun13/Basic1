@@ -1,5 +1,8 @@
 package com.sbs.basic1;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,17 +12,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
 
 @Controller
 public class HomeController {
     private int cnt;
     private List<Person> people; //전역변수로 끄집어내야함
     public HomeController() {
-        cnt = -1;
+        cnt = 0;
         people = new ArrayList<>();
     }
 
@@ -34,7 +35,33 @@ public class HomeController {
     public String showHome2() {
         return "환영합니다!";
     }
-
+    @GetMapping("/home/increase")
+    @ResponseBody
+    public int showIncrease() {
+        return cnt++;
+    }
+    @GetMapping("/home/cookie/increase")
+    @ResponseBody
+    public int showCookieIncrease(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        int countInCookie = 0;
+        if(req.getCookies() != null){ //쿠키를 이용해서 개별적인 부라우저의 값을 관리 할 수 있다!!
+             countInCookie = Arrays.stream(req.getCookies())
+                .filter(cookie-> cookie.getName().equals("count"))
+                .map(cookie -> cookie.getValue())
+                .mapToInt(Integer::parseInt)
+                .findFirst()
+                .orElse(0);
+        }
+        int newCountInCookie = countInCookie +1;
+        resp.addCookie(new Cookie("count",newCountInCookie+ ""));
+        return newCountInCookie;
+    }
+    @GetMapping("/home/regAndResp")
+    @ResponseBody
+    public void showRegAndResp(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        int age = Integer.parseInt(req.getParameter("age"));
+        resp.getWriter().append("Hello");
+    }
     @GetMapping("/home/plus")
     @ResponseBody
     public int showPlus(@RequestParam(defaultValue = "0") int a, @RequestParam(defaultValue = "0") int b) {
