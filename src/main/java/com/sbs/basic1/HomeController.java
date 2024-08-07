@@ -173,6 +173,15 @@ public class HomeController {
     public List<Person> showPeople(){
         return people;
     }
+    @GetMapping("/home/removePerson")
+    @ResponseBody
+    public String removePerson(int id){
+        boolean removed = people.removeIf(person->person.getId() == id);
+        if(removed == false){
+            return "%d번에 해당하는 사람이 없습니다".formatted(id);
+        }
+        return "%d번의 사람을 삭제했습니다.".formatted(id);
+    }
     @AllArgsConstructor
     @Getter //getId받기 위해서
     @ToString //결과 출력한거 보여줌 ex) HomeController.Person(id=1, name=dru, age=87)
