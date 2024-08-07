@@ -2,9 +2,10 @@ package com.sbs.basic1.boundedContext.member.service;
 import com.sbs.basic1.boundedContext.member.entity.Member;
 import com.sbs.basic1.boundedContext.base.rsData.RsData;
 import com.sbs.basic1.boundedContext.member.repository.MemberRepository;
+import org.springframework.stereotype.Component;
 
 
-
+@Component
 public class MemberService {
     private final MemberRepository memberRepository;
     public MemberService(){
