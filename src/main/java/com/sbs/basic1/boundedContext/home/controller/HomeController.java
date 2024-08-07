@@ -55,17 +55,17 @@ public class HomeController {
     }
     @GetMapping("/home/cookie/increase")
     @ResponseBody
-    public int showCookieIncrease(HttpServletRequest req, HttpServletResponse resp) throws IOException{
-        int countInCookie = 0;
+    public Long showCookieIncrease(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        Long countInCookie = 0L;
         if(req.getCookies() != null){ //쿠키를 이용해서 개별적인 부라우저의 값을 관리 할 수 있다!!
              countInCookie = Arrays.stream(req.getCookies())
                 .filter(cookie-> cookie.getName().equals("count"))
                 .map(cookie -> cookie.getValue())
-                .mapToInt(Integer::parseInt)
+                .mapToLong(Long::parseLong)
                 .findFirst()
                 .orElse(0);
         }
-        int newCountInCookie = countInCookie +1;
+        Long newCountInCookie = countInCookie +1;
         resp.addCookie(new Cookie("count",newCountInCookie+ ""));
         return newCountInCookie;
     }

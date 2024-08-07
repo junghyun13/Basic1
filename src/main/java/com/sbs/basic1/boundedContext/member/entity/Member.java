@@ -7,10 +7,10 @@ import lombok.Data;
 @Data
 public class Member {
     private static int lastId;
-    private final int id;
+    private final Long id;
     private final String username;
     private final String password;
     public Member(String username,String password){
-        this(++lastId,username,password);
+        this((long) ++lastId,username,password);
     }
 }

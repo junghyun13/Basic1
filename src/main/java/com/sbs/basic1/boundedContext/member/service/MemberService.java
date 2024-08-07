@@ -26,9 +26,13 @@ public class MemberService {
         else if(!username.equals(username)){
             return RsData.of("F-2","%s는 존재하지 않는 회원입니다.".formatted(username));
         }
-        return RsData.of("S-1","%s 님 환영합니다.".formatted(username));
+        return RsData.of("S-1","%s 님 환영합니다.".formatted(username),member.getId());
     }
     public Member findByUserName(String username){
         return memberRepository.findByUserName(username);
+    }
+
+    public Member findById(long id) {
+        return memberRepository.findById(id);
     }
 }
