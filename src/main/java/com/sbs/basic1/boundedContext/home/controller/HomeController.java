@@ -1,4 +1,4 @@
-package com.sbs.basic1;
+package com.sbs.basic1.boundedContext.home.controller;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
