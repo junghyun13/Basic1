@@ -25,11 +25,11 @@ public class HomeController {
     private List<Person> people; //전역변수로 끄집어내야함
     @Autowired
 
-    private MemberService memberService;
-    public HomeController() {
-        cnt = 0;
+    private final MemberService memberService;
+    public HomeController(MemberService memberService) {
+        cnt = -1;
         people = new ArrayList<>();
-        memberService = new MemberService();
+        this.memberService = memberService;
     }
 
     @GetMapping("/home/main")
