@@ -182,14 +182,30 @@ public class HomeController {
         }
         return "%d번의 사람을 삭제했습니다.".formatted(id);
     }
+    @GetMapping("/home/modifyPerson")
+    @ResponseBody
+    public String modifyPerson(int id, String name, int age){
+        Person found = people.stream()
+                .filter(person-> person.getId() == id) //참인것 필터링
+                .findFirst() //필터링결과 하나 남는데 하나남은 걸 가져옴
+                .orElse(null); //없으면 null값으로 반환
+        if(found == null){
+            return "%d번에 해당하는 사람이 없습니다".formatted(id);
+        }
+        found.setName(name);
+        found.setAge(age); //해당 번호의 사람의 이름과 나이가 수정됨
+        return "%d번의 사람이 수정되었습니다.".formatted(id);
+    }
     @AllArgsConstructor
     @Getter //getId받기 위해서
     @ToString //결과 출력한거 보여줌 ex) HomeController.Person(id=1, name=dru, age=87)
     class Person {
         private static int lastId=0;
         private int id;
-        private final String name;
-        private final int age;
+        @Setter
+        private String name;
+        @Setter
+        private int age;
 
 
         public Person(String name, int age) {
