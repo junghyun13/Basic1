@@ -1,5 +1,8 @@
 package com.sbs.basic1.boundedContext.home.controller;
 
+
+import com.sbs.basic1.boundedContext.member.entity.Member;
+import com.sbs.basic1.boundedContext.member.service.MemberService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,9 +22,11 @@ import java.util.*;
 public class HomeController {
     private int cnt;
     private List<Person> people; //전역변수로 끄집어내야함
+    private MemberService memberService;
     public HomeController() {
         cnt = 0;
         people = new ArrayList<>();
+        memberService = new MemberService();
     }
 
     @GetMapping("/home/main")
@@ -34,6 +39,11 @@ public class HomeController {
     @ResponseBody
     public String showHome2() {
         return "환영합니다!";
+    }
+    @GetMapping("/home/user2")
+    @ResponseBody
+    public Member showUser1(){
+        return memberService.findByUserName("user2");
     }
     @GetMapping("/home/increase")
     @ResponseBody
